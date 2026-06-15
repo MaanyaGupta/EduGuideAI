@@ -6,7 +6,7 @@ EduGuide AI is an intelligent college discovery and career guidance platform des
 ---
 ## 🚀 Live Demo
 
-🌐 Live Application: https://edu-guide-ai-doj6.vercel.app/
+🌐 Live Application: https://edu-guide-ai-chi.vercel.app/
 
 ## 🚀 Key Features
 
