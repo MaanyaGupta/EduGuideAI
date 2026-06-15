@@ -46,9 +46,10 @@ def recommend(
 
 
 @router.get("/compare", response_model=CompareResponse)
-def compare(names: str = Query(..., description="Comma-separated college names")) -> CompareResponse:
-    colleges, metrics = comparisons.compare([name.strip() for name in names.split(",")])
-    return CompareResponse(colleges=colleges, metrics=metrics)
+def compare(names: str = Query(..., description="College names separated by 'and', 'vs', or newlines")) -> CompareResponse:
+    parsed_names = SupervisorAgent._extract_comparison_names(names)
+    colleges, metrics, clarifications = comparisons.compare(parsed_names)
+    return CompareResponse(colleges=colleges, metrics=metrics, clarifications=clarifications)
 
 
 @router.get("/search", response_model=RecommendationResponse)

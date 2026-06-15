@@ -42,7 +42,7 @@ export const api = {
       body: JSON.stringify({ message, session_id: "demo-user" })
     }),
   recommend: (params: URLSearchParams) => request<{ count: number; results: College[] }>(`/recommend?${params}`),
-  compare: (names: string) => request<{ colleges: College[]; metrics: Record<string, unknown[]> }>(`/compare?names=${encodeURIComponent(names)}`),
+  compare: (names: string) => request<{ colleges: College[]; metrics: Record<string, unknown[]>; clarifications: string[] }>(`/compare?names=${encodeURIComponent(names)}`),
   career: (interests: string) =>
     request<{ recommended_streams: string[]; guidance: string }>("/career", {
       method: "POST",

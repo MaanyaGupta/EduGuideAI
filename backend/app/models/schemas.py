@@ -28,6 +28,7 @@ class RecommendationResponse(BaseModel):
 class CompareResponse(BaseModel):
     colleges: list[College]
     metrics: dict[str, list[Any]]
+    clarifications: list[str] = []
 
 
 class ChatRequest(BaseModel):

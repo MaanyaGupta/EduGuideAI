@@ -43,8 +43,22 @@ class SupervisorAgent:
         route = self._route(message)
 
         if route == "comparison":
+            cat_comp = self._parse_category_comparison(message)
+            if cat_comp:
+                limit, stream, state = cat_comp
+                colleges = self.recommendations.recommend(state=state, stream=stream, limit=limit)
+                answer = self.rag.answer(message, colleges)
+                return ChatResponse(route=route, answer=answer, results=colleges, memory=memory)
+
             names = self._extract_comparison_names(message)
-            colleges, _ = self.comparisons.compare(names)
+            if not names:
+                return ChatResponse(route=route, answer="Please provide colleges to compare.", results=[], memory=memory)
+
+            colleges, _, clarifications = self.comparisons.compare(names)
+            if clarifications:
+                answer = "\n".join(clarifications) + "\nPlease clarify which colleges you meant."
+                return ChatResponse(route=route, answer=answer, results=[], memory=memory)
+
             answer = self.rag.answer(message, colleges)
             return ChatResponse(route=route, answer=answer, results=colleges, memory=memory)
 
@@ -98,8 +112,26 @@ class SupervisorAgent:
     @staticmethod
     def _extract_comparison_names(message: str) -> list[str]:
         cleaned = re.sub(r"compare|colleges?|please|between", "", message, flags=re.I)
-        parts = re.split(r"\s+vs\s+|\s+versus\s+|\s+and\s+|,", cleaned, flags=re.I)
-        return [part.strip() for part in parts if len(part.strip()) > 2][:4]
+        parts = re.split(r"\s+vs\s+|\s+versus\s+|\s+and\s+|\n|;", cleaned, flags=re.I)
+        return [part.strip(" ,").strip() for part in parts if len(part.strip(" ,").strip()) > 2][:4]
+
+    @staticmethod
+    def _parse_category_comparison(message: str) -> tuple[int, str, str] | None:
+        text = message.lower()
+        if "compare" not in text:
+            return None
+        
+        limit_match = re.search(r"compare\s+(\d+)", text)
+        if not limit_match:
+            return None
+        limit = int(limit_match.group(1))
+        
+        stream = SupervisorAgent._extract_stream(message)
+        state = SupervisorAgent._extract_state(message)
+        
+        if stream and state:
+            return limit, stream, state
+        return None
 
     @staticmethod
     def _extract_stream(message: str) -> str | None:

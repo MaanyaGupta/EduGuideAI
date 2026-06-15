@@ -145,11 +145,13 @@ function Compare() {
   const [names, setNames] = useState("Vellore Institute of Technology, SRM Institute of Science and Technology");
   const [colleges, setColleges] = useState<College[]>([]);
   const [metrics, setMetrics] = useState<Record<string, unknown[]> | null>(null);
+  const [clarifications, setClarifications] = useState<string[]>([]);
 
   async function run() {
     const data = await api.compare(names);
     setColleges(data.colleges);
     setMetrics(data.metrics);
+    setClarifications(data.clarifications || []);
   }
 
   const rows = useMemo(() => Object.entries(metrics ?? {}), [metrics]);
@@ -164,6 +166,16 @@ function Compare() {
         </button>
       </section>
       <section className="space-y-4">
+        {clarifications.length > 0 && (
+          <div className="rounded border border-amber-200 bg-amber-50 p-4 text-amber-900">
+            <h3 className="font-semibold">Clarification Needed</h3>
+            <ul className="mt-2 list-disc pl-5">
+              {clarifications.map((c, i) => (
+                <li key={i}>{c}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         {rows.length > 0 && (
           <div className="overflow-x-auto rounded border border-stone-200 bg-white">
             <table className="min-w-full text-sm">

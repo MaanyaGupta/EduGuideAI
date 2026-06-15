@@ -1,4 +1,5 @@
 from app.core.config import get_settings
+from app.core.prompts import SYSTEM_PROMPT
 from app.models.schemas import College
 from app.rag.vector_store import VectorStore
 
@@ -26,10 +27,7 @@ class RagService:
                 messages=[
                     {
                         "role": "system",
-                        "content": (
-                            "You are EduGuide AI, a concise college recommendation and career guidance assistant. "
-                            "Use only the provided college context for factual college claims."
-                        ),
+                        "content": SYSTEM_PROMPT,
                     },
                     {
                         "role": "user",
