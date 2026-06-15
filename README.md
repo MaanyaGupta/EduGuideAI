@@ -4,6 +4,9 @@
 EduGuide AI is an intelligent college discovery and career guidance platform designed to help students make informed academic decisions. The system combines Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), semantic search, and recommendation algorithms to provide personalized college recommendations, comparisons, and career guidance.
 
 ---
+## 🚀 Live Demo
+
+🌐 Live Application: https://edu-guide-ai-doj6.vercel.app/
 
 ## 🚀 Key Features
 
