@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "Segoe UI", "sans-serif"]
+        sans: ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "Segoe UI", "sans-serif"]
       },
       colors: {
         ink: "#1f2933",
